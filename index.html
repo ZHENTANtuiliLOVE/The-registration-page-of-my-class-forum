@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>注册</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(135deg,#FFF886 10%,#F072B6 100%); min-height:100vh; display:flex; align-items:center; justify-content:center; margin:0; }
+    .card { background: rgba(255,255,255,0.9); border-radius:12px; padding:24px; width:360px; box-shadow:0 8px 24px rgba(0,0,0,0.12); }
+    h2 { margin:0 0 12px 0; text-align:center; }
+    label { display:block; margin-top:10px; font-size:14px; }
+    input[type="text"], input[type="email"], input[type="password"] {
+      width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; box-sizing:border-box;
+    }
+    .error { color:#d9534f; margin-top:8px; font-size:14px; }
+    .success { color:#2d8a4a; margin-top:8px; font-size:14px; }
+    button { width:100%; margin-top:16px; padding:10px; border:none; background:#333; color:#fff; border-radius:8px; cursor:pointer; font-weight:600; }
+    a { color:#333; text-decoration:none; display:block; text-align:center; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <div class="card" role="region" aria-label="注册表单">
+    <h2>创建新账户</h2>
+    <form id="regForm" action="register.php" method="post" novalidate>
+      <label for="username">用户名</label>
+      <input id="username" name="username" type="text" required minlength="2" />
+
+      <label for="email">电子邮箱</label>
+      <input id="email" name="email" type="email" required />
+
+      <label for="password">密码</label>
+      <input id="password" name="password" type="password" required minlength="6" />
+
+      <label for="confirm_password">确认密码</label>
+      <input id="confirm_password" name="confirm_password" type="password" required minlength="6" />
+
+      <div id="error" class="error" aria-live="polite"></div>
+      <button type="submit" name="submit">注册</button>
+    </form>
+
+    <a href="login.html">已有账号？去登录</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('regForm');
+    const err = document.getElementById('error');
+
+    form.addEventListener('submit', (e) => {
+      err.textContent = '';
+      const u = form.username.value.trim();
+      const em = form.email.value.trim();
+      const p = form.password.value;
+      const cp = form.confirm_password.value;
+
+      if (u.length < 2) { e.preventDefault(); err.textContent = '用户名至少2个字符'; return; }
+      if (!/^\S+@\S+\.\S+$/.test(em)) { e.preventDefault(); err.textContent = '请输入有效邮箱'; return; }
+      if (p.length < 6) { e.preventDefault(); err.textContent = '密码至少6位'; return; }
+      if (p !== cp) { e.preventDefault(); err.textContent = '两次输入的密码不一致'; return; }
+      // 表单允许提交到 register.php（服务器端仍会再次验证）
+    });
+  </script>
+</body>
+</html>
